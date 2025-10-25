@@ -1,11 +1,14 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { FileText, Plus, CheckCircle, Clock } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
+import Header from "@/components/Header";
+import { useAuth } from "@/hooks/useAuth";
+import { useNavigate } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
 
 interface InvoiceItem {
   id: number;
@@ -17,6 +20,24 @@ interface InvoiceItem {
 }
 
 const Invoice = () => {
+  const navigate = useNavigate();
+  const { user, userRole, loading } = useAuth();
+  
+  useEffect(() => {
+    if (!loading && !user) {
+      navigate("/auth");
+    }
+  }, [user, loading, navigate]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="animate-spin h-8 w-8 border-4 border-primary border-t-transparent rounded-full"></div>
+      </div>
+    );
+  }
+
+  if (!user) return null;
   const [showForm, setShowForm] = useState(false);
   const [invoices, setInvoices] = useState<InvoiceItem[]>([
     {
@@ -112,13 +133,10 @@ const Invoice = () => {
 
   return (
     <div className="min-h-screen bg-background pb-20">
-      {/* Header */}
-      <header className="gradient-primary text-white p-6 pb-24 shadow-lg">
-        <div className="max-w-screen-xl mx-auto">
-          <h1 className="text-2xl font-bold mb-2">Invoice</h1>
-          <p className="text-sm opacity-90">Kelola invoice pelanggan</p>
-        </div>
-      </header>
+      <Header 
+        title="Invoice" 
+        subtitle="Kelola invoice pelanggan"
+      />
 
       {/* Main Content */}
       <main className="max-w-screen-xl mx-auto px-4 -mt-16">

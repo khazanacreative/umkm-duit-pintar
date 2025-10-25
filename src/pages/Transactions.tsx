@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -6,8 +6,14 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Calendar, Plus } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
+import Header from "@/components/Header";
+import { useAuth } from "@/hooks/useAuth";
+import { useNavigate } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
 
 const Transactions = () => {
+  const navigate = useNavigate();
+  const { user, userRole, loading } = useAuth();
   const [formData, setFormData] = useState({
     tanggal: new Date().toISOString().split('T')[0],
     keterangan: "",
@@ -16,10 +22,25 @@ const Transactions = () => {
     nominal: "",
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  useEffect(() => {
+    if (!loading && !user) {
+      navigate("/auth");
+    }
+  }, [user, loading, navigate]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="animate-spin h-8 w-8 border-4 border-primary border-t-transparent rounded-full"></div>
+      </div>
+    );
+  }
+
+  if (!user) return null;
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Validation
     if (!formData.tanggal || !formData.keterangan || !formData.kategori || !formData.jenis || !formData.nominal) {
       toast({
         title: "Error",
@@ -29,13 +50,39 @@ const Transactions = () => {
       return;
     }
 
-    // Here would be the database insertion
+    if (!userRole?.branch_id) {
+      toast({
+        title: "Error",
+        description: "Anda belum terdaftar di cabang manapun!",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const { error } = await supabase.from("transaksi").insert({
+      branch_id: userRole.branch_id,
+      user_id: user?.id,
+      tanggal: formData.tanggal,
+      keterangan: formData.keterangan,
+      kategori: formData.kategori,
+      jenis: formData.jenis,
+      nominal: parseFloat(formData.nominal),
+    });
+
+    if (error) {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive",
+      });
+      return;
+    }
+
     toast({
       title: "Berhasil",
       description: "Transaksi berhasil ditambahkan!",
     });
 
-    // Reset form
     setFormData({
       tanggal: new Date().toISOString().split('T')[0],
       keterangan: "",
@@ -49,15 +96,11 @@ const Transactions = () => {
 
   return (
     <div className="min-h-screen bg-background pb-20">
-      {/* Header */}
-      <header className="gradient-primary text-white p-6 pb-24 shadow-lg">
-        <div className="max-w-screen-xl mx-auto">
-          <h1 className="text-2xl font-bold mb-2">Transaksi</h1>
-          <p className="text-sm opacity-90">Tambah dan kelola transaksi</p>
-        </div>
-      </header>
+      <Header 
+        title="Transaksi" 
+        subtitle="Tambah dan kelola transaksi"
+      />
 
-      {/* Main Content */}
       <main className="max-w-screen-xl mx-auto px-4 -mt-16">
         <Card className="p-6 shadow-lg animate-fade-in">
           <div className="flex items-center gap-2 mb-6">
@@ -66,7 +109,6 @@ const Transactions = () => {
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-5">
-            {/* Tanggal */}
             <div className="space-y-2">
               <Label htmlFor="tanggal" className="flex items-center gap-2">
                 <Calendar className="h-4 w-4" />
@@ -81,7 +123,6 @@ const Transactions = () => {
               />
             </div>
 
-            {/* Keterangan */}
             <div className="space-y-2">
               <Label htmlFor="keterangan">Keterangan</Label>
               <Input
@@ -94,7 +135,6 @@ const Transactions = () => {
               />
             </div>
 
-            {/* Kategori */}
             <div className="space-y-2">
               <Label htmlFor="kategori">Kategori</Label>
               <Select
@@ -114,7 +154,6 @@ const Transactions = () => {
               </Select>
             </div>
 
-            {/* Jenis */}
             <div className="space-y-2">
               <Label htmlFor="jenis">Jenis Transaksi</Label>
               <Select
@@ -135,7 +174,6 @@ const Transactions = () => {
               </Select>
             </div>
 
-            {/* Nominal */}
             <div className="space-y-2">
               <Label htmlFor="nominal">Nominal (Rp)</Label>
               <Input
@@ -149,7 +187,6 @@ const Transactions = () => {
               />
             </div>
 
-            {/* Submit Button */}
             <Button
               type="submit"
               className="w-full py-6 text-lg font-semibold gradient-primary border-0"
@@ -161,7 +198,6 @@ const Transactions = () => {
           </form>
         </Card>
 
-        {/* Transaction History Section */}
         <div className="mt-6">
           <h3 className="text-lg font-semibold mb-4">Riwayat Transaksi</h3>
           <Card className="p-4 text-center text-muted-foreground">

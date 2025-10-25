@@ -1,11 +1,32 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { BarChart3, TrendingUp, TrendingDown, Calendar, Download } from "lucide-react";
+import Header from "@/components/Header";
+import { useAuth } from "@/hooks/useAuth";
+import { useNavigate } from "react-router-dom";
 
 const Reports = () => {
+  const navigate = useNavigate();
+  const { user, loading } = useAuth();
+
+  useEffect(() => {
+    if (!loading && !user) {
+      navigate("/auth");
+    }
+  }, [user, loading, navigate]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="animate-spin h-8 w-8 border-4 border-primary border-t-transparent rounded-full"></div>
+      </div>
+    );
+  }
+
+  if (!user) return null;
   const [startDate, setStartDate] = useState("2025-01-01");
   const [endDate, setEndDate] = useState(new Date().toISOString().split('T')[0]);
 
@@ -42,13 +63,10 @@ const Reports = () => {
 
   return (
     <div className="min-h-screen bg-background pb-20">
-      {/* Header */}
-      <header className="gradient-primary text-white p-6 pb-24 shadow-lg">
-        <div className="max-w-screen-xl mx-auto">
-          <h1 className="text-2xl font-bold mb-2">Laporan</h1>
-          <p className="text-sm opacity-90">Analisis keuangan usaha</p>
-        </div>
-      </header>
+      <Header 
+        title="Laporan" 
+        subtitle="Analisis keuangan usaha"
+      />
 
       {/* Main Content */}
       <main className="max-w-screen-xl mx-auto px-4 -mt-16">

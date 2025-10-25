@@ -1,15 +1,66 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Wallet, TrendingUp, TrendingDown, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import StatCard from "@/components/StatCard";
 import { Card } from "@/components/ui/card";
 import { useNavigate } from "react-router-dom";
+import Header from "@/components/Header";
+import { useAuth } from "@/hooks/useAuth";
+import { supabase } from "@/integrations/supabase/client";
 
 const Dashboard = () => {
   const navigate = useNavigate();
+  const { user, userRole, loading } = useAuth();
+  const [branches, setBranches] = useState<any[]>([]);
+  const [selectedBranch, setSelectedBranch] = useState<string>("");
   const [saldo] = useState(15750000);
   const [pemasukan] = useState(25000000);
   const [pengeluaran] = useState(9250000);
+
+  useEffect(() => {
+    if (!loading && !user) {
+      navigate("/auth");
+    }
+  }, [user, loading, navigate]);
+
+  useEffect(() => {
+    if (user && userRole) {
+      if (userRole.role === "admin_pusat") {
+        supabase
+          .from("branches")
+          .select("*")
+          .then(({ data }) => {
+            if (data) {
+              setBranches(data);
+              if (data.length > 0) setSelectedBranch(data[0].id);
+            }
+          });
+      } else if (userRole.branch_id) {
+        setSelectedBranch(userRole.branch_id);
+        supabase
+          .from("branches")
+          .select("*")
+          .eq("id", userRole.branch_id)
+          .single()
+          .then(({ data }) => {
+            if (data) setBranches([data]);
+          });
+      }
+    }
+  }, [user, userRole]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin h-8 w-8 border-4 border-primary border-t-transparent rounded-full mx-auto mb-4"></div>
+          <p className="text-muted-foreground">Memuat...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!user) return null;
 
   const formatCurrency = (value: number) => {
     return new Intl.NumberFormat("id-ID", {
@@ -27,17 +78,16 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen bg-background pb-20">
-      {/* Header */}
-      <header className="gradient-primary text-white p-6 pb-24 shadow-lg">
-        <div className="max-w-screen-xl mx-auto">
-          <h1 className="text-2xl font-bold mb-2">KasKu</h1>
-          <p className="text-sm opacity-90">Kelola keuangan usaha dengan mudah</p>
-        </div>
-      </header>
+      <Header 
+        title="KasKu" 
+        subtitle="Kelola keuangan usaha dengan mudah"
+        showBranchSelector={userRole?.role === "admin_pusat"}
+        selectedBranch={selectedBranch}
+        branches={branches}
+        onBranchChange={setSelectedBranch}
+      />
 
-      {/* Main Content */}
       <main className="max-w-screen-xl mx-auto px-4 -mt-16">
-        {/* Saldo Card */}
         <Card className="p-6 shadow-lg mb-6 gradient-card">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-3">
@@ -69,7 +119,6 @@ const Dashboard = () => {
           </div>
         </Card>
 
-        {/* Quick Actions */}
         <div className="mb-6">
           <Button 
             onClick={() => navigate("/transactions")}
@@ -81,7 +130,6 @@ const Dashboard = () => {
           </Button>
         </div>
 
-        {/* Stats Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
           <StatCard
             title="Total Saldo"
@@ -103,7 +151,6 @@ const Dashboard = () => {
           />
         </div>
 
-        {/* Recent Transactions */}
         <div className="mb-6">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-semibold">Transaksi Terbaru</h3>

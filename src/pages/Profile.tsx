@@ -1,19 +1,42 @@
+import { useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { User, Store, MapPin, Phone } from "lucide-react";
+import { User, Store, MapPin, Phone, LogOut } from "lucide-react";
+import Header from "@/components/Header";
+import { useAuth } from "@/hooks/useAuth";
+import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
+  const navigate = useNavigate();
+  const { user, loading, signOut } = useAuth();
+
+  useEffect(() => {
+    if (!loading && !user) {
+      navigate("/auth");
+    }
+  }, [user, loading, navigate]);
+
+  const handleLogout = async () => {
+    await signOut();
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="animate-spin h-8 w-8 border-4 border-primary border-t-transparent rounded-full"></div>
+      </div>
+    );
+  }
+
+  if (!user) return null;
   return (
     <div className="min-h-screen bg-background pb-20">
-      {/* Header */}
-      <header className="gradient-primary text-white p-6 pb-24 shadow-lg">
-        <div className="max-w-screen-xl mx-auto">
-          <h1 className="text-2xl font-bold mb-2">Profil</h1>
-          <p className="text-sm opacity-90">Kelola informasi usaha Anda</p>
-        </div>
-      </header>
+      <Header 
+        title="Profil" 
+        subtitle="Kelola informasi usaha Anda"
+      />
 
       {/* Main Content */}
       <main className="max-w-screen-xl mx-auto px-4 -mt-16">
@@ -79,7 +102,6 @@ const Profile = () => {
           </form>
         </Card>
 
-        {/* Additional Settings */}
         <Card className="p-6 shadow-lg mt-6">
           <h3 className="text-lg font-semibold mb-4">Pengaturan Lainnya</h3>
           <div className="space-y-3">
@@ -89,7 +111,13 @@ const Profile = () => {
             <Button variant="outline" className="w-full justify-start" size="lg">
               API Integration
             </Button>
-            <Button variant="outline" className="w-full justify-start text-destructive hover:text-destructive" size="lg">
+            <Button 
+              variant="outline" 
+              className="w-full justify-start text-destructive hover:text-destructive hover:bg-destructive/10" 
+              size="lg"
+              onClick={handleLogout}
+            >
+              <LogOut className="h-4 w-4 mr-2" />
               Logout
             </Button>
           </div>
