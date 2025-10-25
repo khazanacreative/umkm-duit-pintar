@@ -69,7 +69,7 @@ const Reports = () => {
       />
 
       {/* Main Content */}
-      <main className="max-w-screen-xl mx-auto px-4 -mt-16 z-10">
+      <main className="max-w-screen-xl mx-auto px-4 -mt-16 z-0">
         {/* Filter Date Range */}
         <Card className="p-5 shadow-lg mb-6 animate-fade-in">
           <div className="flex items-center gap-2 mb-4">
