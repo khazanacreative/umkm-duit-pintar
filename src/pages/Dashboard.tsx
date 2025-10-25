@@ -87,7 +87,7 @@ const Dashboard = () => {
         onBranchChange={setSelectedBranch}
       />
 
-      <main className="max-w-screen-xl mx-auto px-4 -mt-16">
+      <main className="max-w-screen-xl mx-auto px-4 -mt-16 z-10">
         <Card className="p-6 shadow-lg mb-6 gradient-card">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-3">

@@ -32,14 +32,14 @@ const Profile = () => {
 
   if (!user) return null;
   return (
-    <div className="min-h-screen bg-background pb-20">
+    <div className="min-h-screen bg-background pb-20 z-0">
       <Header 
         title="Profil" 
         subtitle="Kelola informasi usaha Anda"
       />
 
       {/* Main Content */}
-      <main className="max-w-screen-xl mx-auto px-4 -mt-16 z-0">
+      <main className="max-w-screen-xl mx-auto px-4 -mt-16 z-10">
         <Card className="p-6 shadow-lg animate-fade-in">
           <div className="flex items-center gap-3 mb-6">
             <div className="gradient-primary p-3 rounded-xl">

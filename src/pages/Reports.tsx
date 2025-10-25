@@ -62,14 +62,14 @@ const Reports = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background pb-20">
+    <div className="min-h-screen bg-background pb-20 z-0">
       <Header 
         title="Laporan" 
         subtitle="Analisis keuangan usaha"
       />
 
       {/* Main Content */}
-      <main className="max-w-screen-xl mx-auto px-4 -mt-16 z-0">
+      <main className="max-w-screen-xl mx-auto px-4 -mt-16 z-10">
         {/* Filter Date Range */}
         <Card className="p-5 shadow-lg mb-6 animate-fade-in">
           <div className="flex items-center gap-2 mb-4">
