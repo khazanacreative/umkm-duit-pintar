@@ -77,7 +77,7 @@ const Dashboard = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-background pb-20 z-0">
+    <div className="min-h-screen bg-background pb-20 relative z-0">
       <Header 
         title="KasKu" 
         subtitle="Kelola keuangan usaha dengan mudah"
@@ -87,7 +87,7 @@ const Dashboard = () => {
         onBranchChange={setSelectedBranch}
       />
 
-      <main className="max-w-screen-xl mx-auto px-4 -mt-16 z-10">
+      <main className="max-w-screen-xl mx-auto px-4 -mt-16 relative z-10">
         <Card className="p-6 shadow-lg mb-6 gradient-card">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-3">

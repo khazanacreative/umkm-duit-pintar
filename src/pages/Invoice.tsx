@@ -132,14 +132,14 @@ const Invoice = () => {
     .reduce((sum, inv) => sum + inv.nominal, 0);
 
   return (
-    <div className="min-h-screen bg-background pb-20 z-0">
+    <div className="min-h-screen bg-background pb-20 relative z-0">
       <Header 
         title="Invoice" 
         subtitle="Kelola invoice pelanggan"
       />
 
       {/* Main Content */}
-      <main className="max-w-screen-xl mx-auto px-4 -mt-16">
+      <main className="max-w-screen-xl mx-auto px-4 -mt-16 relative z-10">
         {/* Summary Cards */}
         <div className="grid grid-cols-2 gap-4 mb-6">
           <Card className="p-4 shadow-card">

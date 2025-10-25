@@ -95,13 +95,13 @@ const Transactions = () => {
   const kategoris = ["Penjualan", "Pembelian", "Gaji", "Operasional", "Lainnya"];
 
   return (
-    <div className="min-h-screen bg-background pb-20 z-0">
+    <div className="min-h-screen bg-background pb-20 relative z-0">
       <Header 
         title="Transaksi" 
         subtitle="Tambah dan kelola transaksi"
       />
 
-      <main className="max-w-screen-xl mx-auto px-4 -mt-16 z-10">
+      <main className="max-w-screen-xl mx-auto px-4 -mt-16 relative z-10">
         <Card className="p-6 shadow-lg animate-fade-in">
           <div className="flex items-center gap-2 mb-6">
             <Plus className="h-6 w-6 text-primary" />
