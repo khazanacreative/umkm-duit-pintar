@@ -26,9 +26,10 @@ const Header = ({
 }: HeaderProps) => {
   return (
     <>
-      <header className="gradient-primary text-white pb-32 relative z-0">
+      {/* Header utama */}
+      <header className="gradient-primary text-white pb-32 relative z-0 overflow-hidden">
         {/* Decorative elements */}
-        <div className="absolute inset-0 opacity-10">
+        <div className="absolute inset-0 opacity-10 pointer-events-none">
           <div className="absolute top-0 right-0 w-64 h-64 bg-white rounded-full -translate-y-1/2 translate-x-1/2" />
           <div className="absolute bottom-0 left-0 w-48 h-48 bg-white rounded-full translate-y-1/2 -translate-x-1/2" />
         </div>
@@ -75,8 +76,10 @@ const Header = ({
         </div>
       </header>
 
-      {/* Spacer agar konten di bawah tidak tertutup */}
-      <div className="h-12 md:h-16"></div>
+      {/* Spacer kecil agar konten di bawah tidak menabrak total */}
+      <div className="h-8 md:h-10"></div>
     </>
   );
 };
+
+export default Header;
