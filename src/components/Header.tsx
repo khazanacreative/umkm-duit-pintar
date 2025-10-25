@@ -25,7 +25,7 @@ const Header = ({
   onBranchChange 
 }: HeaderProps) => {
   return (
-    <header className="gradient-primary text-white pb-32 shadow-lg relative overflow-hidden">
+    <header className="gradient-primary text-white pb-24 relative z-0 overflow-hidden">
       {/* Decorative elements */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute top-0 right-0 w-64 h-64 bg-white rounded-full -translate-y-1/2 translate-x-1/2" />
