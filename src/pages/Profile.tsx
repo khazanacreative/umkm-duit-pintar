@@ -39,7 +39,7 @@ const Profile = () => {
       />
 
       {/* Main Content */}
-      <main className="max-w-screen-xl mx-auto px-4 -mt-16">
+      <main className="max-w-screen-xl mx-auto px-4 -mt-16 z-10">
         <Card className="p-6 shadow-lg animate-fade-in">
           <div className="flex items-center gap-3 mb-6">
             <div className="gradient-primary p-3 rounded-xl">

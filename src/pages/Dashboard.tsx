@@ -77,7 +77,7 @@ const Dashboard = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-background pb-20 z-0">
+    <div className="min-h-screen bg-background pb-20 z-10">
       <Header 
         title="KasKu" 
         subtitle="Kelola keuangan usaha dengan mudah"
