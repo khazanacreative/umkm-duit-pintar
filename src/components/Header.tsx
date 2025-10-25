@@ -25,58 +25,58 @@ const Header = ({
   onBranchChange 
 }: HeaderProps) => {
   return (
-    <header className="gradient-primary text-white pb-24 relative z-0 overflow-hidden">
-      {/* Decorative elements */}
-      <div className="absolute inset-0 opacity-10">
-        <div className="absolute top-0 right-0 w-64 h-64 bg-white rounded-full -translate-y-1/2 translate-x-1/2" />
-        <div className="absolute bottom-0 left-0 w-48 h-48 bg-white rounded-full translate-y-1/2 -translate-x-1/2" />
-      </div>
-
-      <div className="max-w-screen-xl mx-auto px-6 py-6 relative z-10">
-        <div className="flex items-center justify-between mb-3">
-          <div className="flex items-center gap-3">
-            <div className="bg-white/20 backdrop-blur-sm p-2 rounded-xl">
-              <Building2 className="h-6 w-6" />
-            </div>
-            <div>
-              <h1 className="text-2xl font-bold tracking-tight">{title}</h1>
-              <p className="text-sm opacity-90 mt-0.5">{subtitle}</p>
-            </div>
-          </div>
-
-          {showBranchSelector && branches.length > 0 && (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button 
-                  variant="ghost" 
-                  className="bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white border-white/30"
-                  size="sm"
-                >
-                  <Building2 className="h-4 w-4 mr-2" />
-                  {branches.find(b => b.id === selectedBranch)?.nama_cabang || "Pilih Cabang"}
-                  <ChevronDown className="h-4 w-4 ml-2" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-56">
-                {branches.map((branch) => (
-                  <DropdownMenuItem
-                    key={branch.id}
-                    onClick={() => onBranchChange?.(branch.id)}
-                    className={selectedBranch === branch.id ? "bg-accent" : ""}
-                  >
-                    {branch.nama_cabang}
-                  </DropdownMenuItem>
-                ))}
-              </DropdownMenuContent>
-            </DropdownMenu>
-          )}
+    <>
+      <header className="gradient-primary text-white pb-32 relative z-0">
+        {/* Decorative elements */}
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-white rounded-full -translate-y-1/2 translate-x-1/2" />
+          <div className="absolute bottom-0 left-0 w-48 h-48 bg-white rounded-full translate-y-1/2 -translate-x-1/2" />
         </div>
-      </div>
 
-      {/* Overlay area tempat konten berikutnya bisa naik sedikit */}
-      <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-b from-primary/60 to-transparent pointer-events-none z-0" />
-    </header>
+        <div className="max-w-screen-xl mx-auto px-6 py-6 relative z-10">
+          <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center gap-3">
+              <div className="bg-white/20 backdrop-blur-sm p-2 rounded-xl">
+                <Building2 className="h-6 w-6" />
+              </div>
+              <div>
+                <h1 className="text-2xl font-bold tracking-tight">{title}</h1>
+                <p className="text-sm opacity-90 mt-0.5">{subtitle}</p>
+              </div>
+            </div>
+
+            {showBranchSelector && branches.length > 0 && (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button 
+                    variant="ghost" 
+                    className="bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white border-white/30"
+                    size="sm"
+                  >
+                    <Building2 className="h-4 w-4 mr-2" />
+                    {branches.find(b => b.id === selectedBranch)?.nama_cabang || "Pilih Cabang"}
+                    <ChevronDown className="h-4 w-4 ml-2" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-56">
+                  {branches.map((branch) => (
+                    <DropdownMenuItem
+                      key={branch.id}
+                      onClick={() => onBranchChange?.(branch.id)}
+                      className={selectedBranch === branch.id ? "bg-accent" : ""}
+                    >
+                      {branch.nama_cabang}
+                    </DropdownMenuItem>
+                  ))}
+                </DropdownMenuContent>
+              </DropdownMenu>
+            )}
+          </div>
+        </div>
+      </header>
+
+      {/* Spacer agar konten di bawah tidak tertutup */}
+      <div className="h-12 md:h-16"></div>
+    </>
   );
 };
-
-export default Header;
