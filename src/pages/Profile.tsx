@@ -8,7 +8,7 @@ const Profile = () => {
   return (
     <div className="min-h-screen bg-background pb-20">
       {/* Header */}
-      <header className="gradient-primary text-white p-6 rounded-b-3xl shadow-lg">
+      <header className="gradient-primary text-white p-6 pb-24 shadow-lg">
         <div className="max-w-screen-xl mx-auto">
           <h1 className="text-2xl font-bold mb-2">Profil</h1>
           <p className="text-sm opacity-90">Kelola informasi usaha Anda</p>
@@ -16,7 +16,7 @@ const Profile = () => {
       </header>
 
       {/* Main Content */}
-      <main className="max-w-screen-xl mx-auto px-4 -mt-8">
+      <main className="max-w-screen-xl mx-auto px-4 -mt-16">
         <Card className="p-6 shadow-lg animate-fade-in">
           <div className="flex items-center gap-3 mb-6">
             <div className="gradient-primary p-3 rounded-xl">
