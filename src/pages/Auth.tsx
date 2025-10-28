@@ -102,7 +102,7 @@ const Auth = () => {
         title: "Berhasil!",
         description: "Anda berhasil login.",
       });
-      navigate("/");
+      navigate("/home");
     }
   };
 
